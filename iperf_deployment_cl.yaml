@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: iperf
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iperf-cl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: iperf-cl
+  template:
+    metadata:
+      labels:
+        name: iperf-cl
+    spec:
+      containers:
+      - image: clearlinux/iperf:latest
+        imagePullPolicy: Always
+        name: iperf
+        args:
+        - "-s"
+        ports:
+        - containerPort: 5201
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iperf-cl-lb
+  annotations:
+    configmanagement.gke.io/cluster-selector: bandaid-clusters
+    metallb.universe.tf/allow-shared-ip: "key"  
+spec:
+  selector:
+    name: iperf-cl
+  ports:
+  - name: tcp
+    port: 5201
+    targetPort: 5201
+    protocol: TCP
+  type: LoadBalancer
+---
