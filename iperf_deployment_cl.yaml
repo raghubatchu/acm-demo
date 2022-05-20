@@ -7,6 +7,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: iperf-cl
+  namespace: iperf
 spec:
   replicas: 1
   selector:
@@ -30,9 +31,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: iperf-cl-lb
-  annotations:
-    configmanagement.gke.io/cluster-selector: bandaid-clusters
-    metallb.universe.tf/allow-shared-ip: "key"  
+  namespace: iperf
 spec:
   selector:
     name: iperf-cl
