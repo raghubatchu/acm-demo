@@ -20,7 +20,7 @@ spec:
         args:
         - "-s"
         ports:
-        - containerPort: 5201
+        - containerPort: 5001
 ---
 apiVersion: v1
 kind: Service
@@ -32,8 +32,8 @@ spec:
     name: iperf-cl
   ports:
   - name: tcp
-    port: 5201
-    targetPort: 5201
+    port: 5001
+    targetPort: 5001
     protocol: TCP
   type: LoadBalancer
 ---
